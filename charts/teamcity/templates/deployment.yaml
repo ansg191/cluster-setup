@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "teamcity.fullname" . }}
+  labels:
+    {{- include "teamcity.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "teamcity.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "teamcity.selectorLabels" . | nindent 8}}
+    spec:
+      containers:
+        - name: teamcity
+          image: "jetbrains/teamcity-server:latest"
+          ports:
+            - name: server
+              containerPort: {{ .Values.server.port }}
+            - name: agent
+              containerPort: 9090
+          volumeMounts:
+            - name: "data"
+              mountPath: "/data"
+              readOnly: false
+      volumes:
+        - name: "data"
+          persistentVolumeClaim:
+            claimName: {{ include "teamcity.fullname" . }}
+            readOnly: false

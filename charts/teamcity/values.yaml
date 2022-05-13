@@ -1,0 +1,6 @@
+server:
+  port: 8111
+
+ingress:
+  host: teamcity.anshulg.com
+  env: staging

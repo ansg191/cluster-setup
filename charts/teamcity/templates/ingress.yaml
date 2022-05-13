@@ -1,0 +1,31 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "teamcity.fullname" . }}
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.ingress.host }}`) && PathPrefix(`/`)
+{{/*      middlewares:*/}}
+{{/*        - name: {{ include "teamcity.name" . }}-redirectscheme*/}}
+      services:
+        - name: {{ include "teamcity.fullname" . }}
+          port: {{ .Values.server.port }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "teamcity.fullname" . }}-secure
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.ingress.host }}`) && PathPrefix(`/`)
+      services:
+        - name: {{ include "teamcity.fullname" . }}
+          port: {{ .Values.server.port }}
+  tls:
+    secretName: {{ .Values.ingress.host }}

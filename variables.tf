@@ -1,3 +1,7 @@
+variable "cluster_context" {
+	type = string
+}
+
 variable "one_password_operator_token" {
 	type      = string
 	sensitive = true
@@ -33,4 +37,11 @@ variable "metrics_namespace" {
 	type        = string
 	description = "prometheus metrics namespace"
 	default     = "metrics"
+}
+
+
+variable "jetbrains_namespace" {
+	type        = string
+	description = "Jetbrains namespace"
+	default     = "jetbrains"
 }

@@ -18,4 +18,8 @@ resource "kubernetes_manifest" "tls_options" {
 			]
 		}
 	}
+
+	depends_on = [
+		helm_release.traefik
+	]
 }
