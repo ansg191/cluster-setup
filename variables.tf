@@ -2,6 +2,14 @@ variable "cluster_context" {
 	type = string
 }
 
+variable "oci_repo_username" {
+	type = string
+}
+variable "oci_repo_password" {
+	type      = string
+	sensitive = true
+}
+
 variable "one_password_operator_token" {
 	type      = string
 	sensitive = true
