@@ -12,7 +12,8 @@ resource "helm_release" "teamcity" {
 	name       = "teamcity"
 	repository = "oci://anshulg.registry.jetbrains.space/p/shared/charts"
 	chart      = "teamcity"
-	namespace = local.jb_namespace
+	version    = "0.1.4"
+	namespace  = local.jb_namespace
 
 	repository_username = var.oci_repo_username
 	repository_password = var.oci_repo_password

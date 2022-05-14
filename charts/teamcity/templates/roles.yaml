@@ -45,9 +45,9 @@ subjects:
   # use one of examples below
 
   # if you use OIDC/Certificate auth strategies
-  - kind: User
-    name: teamcity
+{{/*  - kind: User*/}}
+{{/*    name: teamcity*/}}
 
   # if you use Service account
   - kind: ServiceAccount
-    name: teamcity
+    name: teamcity-server
