@@ -10,3 +10,25 @@ resource "helm_release" "traefik" {
 	chart      = "traefik"
 	namespace  = "traefik"
 }
+
+resource "kubernetes_service" "traefik_api" {
+	metadata {
+		name      = "traefik-api"
+		namespace = "traefik"
+	}
+	spec {
+		type = "ClusterIP"
+
+		selector = {
+			"app.kubernetes.io/instance" = "traefik"
+			"app.kubernetes.io/name"     = "traefik"
+		}
+
+		port {
+			port        = 9000
+			name        = "traefik"
+			target_port = 9000
+			protocol    = "TCP"
+		}
+	}
+}
