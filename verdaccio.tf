@@ -92,4 +92,8 @@ resource "kubernetes_manifest" "verdaccio_certificate" {
 			"dnsNames"   = ["npm.anshulg.com"]
 		}
 	}
+
+	depends_on = [
+		helm_release.cert_manager
+	]
 }
