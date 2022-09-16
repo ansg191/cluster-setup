@@ -9,6 +9,15 @@ resource "helm_release" "traefik" {
 	repository = "https://helm.traefik.io/traefik"
 	chart      = "traefik"
 	namespace  = "traefik"
+
+	set {
+		name  = "ports.gitea-ssh.port"
+		value = "55222"
+	}
+	set {
+		name  = "ports.gitea-ssh.expose"
+		value = "true"
+	}
 }
 
 resource "kubernetes_service" "traefik_api" {
