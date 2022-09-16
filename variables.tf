@@ -53,3 +53,13 @@ variable "jetbrains_namespace" {
 	description = "Jetbrains namespace"
 	default     = "jetbrains"
 }
+
+variable "gitea_drone_client_id" {
+	type        = string
+	description = "Gitea Drone Application Client ID"
+}
+variable "gitea_drone_client_secret" {
+	type        = string
+	sensitive   = true
+	description = "Gitea Drone Application Client Secret"
+}
