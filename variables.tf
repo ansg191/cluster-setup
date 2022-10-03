@@ -63,3 +63,9 @@ variable "gitea_drone_client_secret" {
 	sensitive   = true
 	description = "Gitea Drone Application Client Secret"
 }
+
+variable "datadog_api_key" {
+	type        = string
+	sensitive   = true
+	description = "DataDog API Key"
+}
