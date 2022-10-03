@@ -4,17 +4,21 @@ resource "kubernetes_namespace" "datadog" {
 	}
 }
 
-resource "kubernetes_secret" "ddog_api_key" {
-	metadata {
-		name      = "ddog-api-key"
-		namespace = "ddog"
-	}
-
-	data = {
-		"api-key" = var.datadog_api_key
+resource "kubernetes_manifest" "ddog_api_key" {
+	manifest = {
+		"apiVersion" = "onepassword.com/v1"
+		"kind" = "OnePasswordItem"
+		"metadata" = {
+			"name" = "ddog-api-key"
+			"namespace" = "ddog"
+		}
+		spec = {
+			"itemPath" = "vaults/Dev/items/DataDog K8 API Key"
+		}
 	}
 
 	depends_on = [
+		helm_release.one_password,
 		kubernetes_namespace.datadog
 	]
 }
@@ -46,6 +50,6 @@ resource "helm_release" "datadog" {
 
 	depends_on = [
 		kubernetes_namespace.datadog,
-		kubernetes_secret.ddog_api_key
+		kubernetes_manifest.ddog_api_key
 	]
 }
