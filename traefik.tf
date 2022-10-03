@@ -11,6 +11,11 @@ resource "helm_release" "traefik" {
 	namespace  = "traefik"
 
 	set {
+		name  = "ports.web.redirectTo"
+		value = "websecure"
+	}
+
+	set {
 		name  = "ports.gitea-ssh.port"
 		value = "55222"
 	}
