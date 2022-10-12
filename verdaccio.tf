@@ -69,6 +69,32 @@ resource "helm_release" "verdaccio" {
 		value = random_password.verdaccio_pwd.result
 	}
 
+	set {
+		name  = "livenessProbe.initialDelaySeconds"
+		value = "30"
+	}
+	set {
+		name  = "replicaCount"
+		value = "2"
+	}
+
+	set {
+		name  = "resources.requests.cpu"
+		value = "10m"
+	}
+	set {
+		name  = "resources.requests.memory"
+		value = "256Mi"
+	}
+	set {
+		name  = "resources.limits.cpu"
+		value = "100m"
+	}
+	set {
+		name  = "resources.limits.memory"
+		value = "512Mi"
+	}
+
 	depends_on = [
 		kubernetes_manifest.verdaccio_certificate
 	]
