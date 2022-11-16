@@ -9,6 +9,12 @@ resource "helm_release" "traefik" {
 	repository = "https://helm.traefik.io/traefik"
 	chart      = "traefik"
 	namespace  = "traefik"
+	version    = "20.2.0"
+
+	set {
+		name  = "image.tag"
+		value = "v2.9.4"
+	}
 
 	set {
 		name  = "ports.web.redirectTo"
@@ -34,7 +40,7 @@ resource "kubernetes_service" "traefik_api" {
 		type = "ClusterIP"
 
 		selector = {
-			"app.kubernetes.io/instance" = "traefik"
+			"app.kubernetes.io/instance" = "traefik-traefik"
 			"app.kubernetes.io/name"     = "traefik"
 		}
 
