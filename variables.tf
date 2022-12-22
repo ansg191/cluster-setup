@@ -63,3 +63,13 @@ variable "gitea_drone_client_secret" {
 	sensitive   = true
 	description = "Gitea Drone Application Client Secret"
 }
+
+variable "step_ci_password" {
+	type        = string
+	sensitive   = true
+	description = "Password for step-ci"
+}
+variable "step_ci_kid" {
+	type = string
+	default = "step-ci provisioner kid"
+}
