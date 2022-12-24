@@ -29,6 +29,25 @@ resource "helm_release" "traefik" {
 		name  = "ports.gitea-ssh.expose"
 		value = "true"
 	}
+
+	set {
+		name  = "ports.frps.port"
+		value = "58000"
+	}
+	set {
+		name  = "ports.frps.expose"
+		value = "true"
+	}
+
+	set {
+		name  = "providers.kubernetesCRD.allowExternalNameServices"
+		value = "true"
+	}
+
+	set {
+		name  = "logs.general.level"
+		value = "ERROR"
+	}
 }
 
 resource "kubernetes_service" "traefik_api" {
