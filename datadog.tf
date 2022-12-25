@@ -48,6 +48,12 @@ resource "helm_release" "datadog" {
 		value = "true"
 	}
 
+	# APM
+	set {
+		name  = "datadog.apm.portEnabled"
+		value = "true"
+	}
+
 	depends_on = [
 		kubernetes_namespace.datadog,
 		kubernetes_manifest.ddog_api_key

@@ -48,6 +48,18 @@ resource "helm_release" "traefik" {
 		name  = "logs.general.level"
 		value = "ERROR"
 	}
+
+	# DDog Metrics
+	set {
+		name  = "metrics.datadog.address"
+		value = "datadog.ddog.svc.cluster.local:8125"
+	}
+
+	# DDog Tracing
+	set {
+		name  = "tracing.datadog.localAgentHostPort"
+		value = "datadog.ddog.svc.cluster.local:8126"
+	}
 }
 
 resource "kubernetes_service" "traefik_api" {
