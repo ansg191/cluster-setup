@@ -78,3 +78,25 @@ resource "kubernetes_manifest" "default_cert_options" {
 
 	depends_on = [helm_release.traefik]
 }
+
+resource "kubernetes_manifest" "security_headers" {
+	manifest = {
+		"apiVersion" = "traefik.containo.us/v1alpha1"
+		"kind"       = "Middleware"
+		"metadata"   = {
+			"name"      = "security-headers"
+			"namespace" = "default"
+		}
+		"spec" = {
+			"headers" = {
+				"frameDeny"          = true
+				"browserXssFilter"   = true
+				"referrerPolicy"     = "no-referrer"
+				"stsSeconds"         = 31536000
+				"contentTypeNosniff" = true
+			}
+		}
+	}
+
+	depends_on = [helm_release.traefik]
+}

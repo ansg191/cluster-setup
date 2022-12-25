@@ -201,6 +201,12 @@ resource "kubernetes_manifest" "frps-webssl-ingress" {
 							"serversTransport" = "internal-transport"
 						},
 					]
+					"middlewares" = [
+						{
+							"name"      = "security-headers"
+							"namespace" = "default"
+						}
+					]
 				},
 			]
 			"tls" = {

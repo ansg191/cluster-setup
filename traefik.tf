@@ -9,18 +9,20 @@ resource "helm_release" "traefik" {
 	repository = "https://helm.traefik.io/traefik"
 	chart      = "traefik"
 	namespace  = "traefik"
-	version    = "20.2.0"
+	version    = "20.8.0"
 
 	set {
 		name  = "image.tag"
-		value = "v2.9.4"
+		value = "v2.9.6"
 	}
 
+	# http -> https redirect
 	set {
 		name  = "ports.web.redirectTo"
 		value = "websecure"
 	}
 
+	# Git SSH entrypoint
 	set {
 		name  = "ports.gitea-ssh.port"
 		value = "55222"
@@ -30,6 +32,7 @@ resource "helm_release" "traefik" {
 		value = "true"
 	}
 
+	# FRPS entrypoint
 	set {
 		name  = "ports.frps.port"
 		value = "58000"
@@ -39,11 +42,19 @@ resource "helm_release" "traefik" {
 		value = "true"
 	}
 
+	# For TLS Verification: allows traefik to call services by their internal DNS name
 	set {
 		name  = "providers.kubernetesCRD.allowExternalNameServices"
 		value = "true"
 	}
 
+	# Allows Cross Namespace References
+	set {
+		name  = "providers.kubernetesCRD.allowCrossNamespace"
+		value = "true"
+	}
+
+	# Logging Level
 	set {
 		name  = "logs.general.level"
 		value = "ERROR"
