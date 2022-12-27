@@ -108,6 +108,6 @@ override.tf.json
 terraform.rc
 
 # 1password credentials
-1password-credentials.json
+files/1password-credentials.json
 
 files/
