@@ -4,35 +4,36 @@ resource "kubernetes_namespace" "nzb" {
 	}
 }
 
-resource "kubernetes_deployment" "sabnzbd" {
+resource "kubernetes_deployment" "nzbget" {
 	metadata {
-		name      = "sabnzbd"
+		name      = "nzbget"
 		namespace = kubernetes_namespace.nzb.metadata[0].name
 		labels    = {
-			"app.kubernetes.io/name" = "sabnzbd"
+			"app.kubernetes.io/name" = "nzbget"
 		}
 	}
 	spec {
 		replicas = "1"
 		selector {
 			match_labels = {
-				"app.kubernetes.io/name" = "sabnzbd"
+				"app.kubernetes.io/name" = "nzbget"
 			}
 		}
 		template {
 			metadata {
 				labels = {
-					"app.kubernetes.io/name" = "sabnzbd"
+					"app.kubernetes.io/name" = "nzbget"
 				}
 			}
 			spec {
 				container {
-					name              = "sabnzbd"
-					image             = "linuxserver/sabnzbd:latest"
+					name              = "nzbget"
+					image             = "linuxserver/nzbget:latest"
 					image_pull_policy = "Always"
 
 					port {
-						container_port = 8080
+						name           = "http"
+						container_port = 6789
 					}
 
 					resources {
@@ -52,7 +53,7 @@ resource "kubernetes_deployment" "sabnzbd" {
 						value = "1000"
 					}
 					env {
-						name  = "GUID"
+						name  = "PGID"
 						value = "1000"
 					}
 					env {
@@ -62,49 +63,23 @@ resource "kubernetes_deployment" "sabnzbd" {
 
 					volume_mount {
 						mount_path = "/config"
-						name       = "config"
+						name       = "data"
+						sub_path   = "nzbget/config"
 					}
 					volume_mount {
 						mount_path = "/downloads"
-						name       = "downloads"
-						sub_path   = "sabnzbd/downloads"
-					}
-					volume_mount {
-						mount_path = "/incomplete-downloads"
-						name       = "downloads"
-						sub_path   = "sabnzbd/incomplete-downloads"
+						name       = "data"
+						sub_path   = "nzbget/downloads"
 					}
 				}
 
 				volume {
-					name = "config"
-					persistent_volume_claim {
-						claim_name = kubernetes_persistent_volume_claim.sabnzbd_config.metadata[0].name
-					}
-				}
-
-				volume {
-					name = "downloads"
+					name = "data"
 					nfs {
 						path   = "/exports"
 						server = "nfs.nfs.svc.cluster.local"
 					}
 				}
-			}
-		}
-	}
-}
-
-resource "kubernetes_persistent_volume_claim" "sabnzbd_config" {
-	metadata {
-		name      = "sabnzbd-config"
-		namespace = kubernetes_namespace.nzb.metadata[0].name
-	}
-	spec {
-		access_modes = ["ReadWriteOnce"]
-		resources {
-			requests = {
-				storage = "1Gi"
 			}
 		}
 	}
@@ -118,12 +93,12 @@ resource "kubernetes_service" "nzb" {
 	spec {
 		type     = "ClusterIP"
 		selector = {
-			"app.kubernetes.io/name" = "sabnzbd"
+			"app.kubernetes.io/name" = "nzbget"
 		}
 		port {
 			name        = "http"
 			port        = 80
-			target_port = 8080
+			target_port = "http"
 		}
 	}
 }
