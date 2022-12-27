@@ -42,16 +42,6 @@ resource "helm_release" "traefik" {
 		value = "true"
 	}
 
-	# SSHFS entrypoint
-	set {
-		name  = "ports.sshfs.port"
-		value = "52222"
-	}
-	set {
-		name  = "ports.sshfs.expose"
-		value = "true"
-	}
-
 	# For TLS Verification: allows traefik to call services by their internal DNS name
 	set {
 		name  = "providers.kubernetesCRD.allowExternalNameServices"
