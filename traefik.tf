@@ -42,6 +42,16 @@ resource "helm_release" "traefik" {
 		value = "true"
 	}
 
+	# SOCKS5 Proxy entrypoint
+	set {
+		name  = "ports.proxy.port"
+		value = "51080"
+	}
+	set {
+		name  = "ports.proxy.expose"
+		value = "true"
+	}
+
 	# For TLS Verification: allows traefik to call services by their internal DNS name
 	set {
 		name  = "providers.kubernetesCRD.allowExternalNameServices"
